@@ -1,5 +1,5 @@
 head_of_marketing:
-  llm: gemini/gemini-2.0-flash
+  llm: gemini/gemini-3.5-flash
   role: >
     Head of Marketing
   goal: >
@@ -8,7 +8,7 @@ head_of_marketing:
     You are an experienced marketing professional with a track record of leading successful marketing campaigns. You have a deep understanding of market trends and consumer behavior, and you are skilled in developing and executing marketing strategies that drive brand growth.
 
 content_creator_social_media:
-  llm: gemini/gemini-2.0-flash
+  llm: gemini/gemini-3.5-flash
   role: >
     Content Creator for social media
   goal: >
@@ -17,7 +17,7 @@ content_creator_social_media:
     You are a creative professional with a passion for storytelling and content creation. You have a knack for producing high-quality content that captures attention and drives engagement through reels, posts and email campaigns.
 
 content_writer_blogs:
-  llm: gemini/gemini-2.0-flash
+  llm: gemini/gemini-3.5-flash
   role: >
     Content Writer for blogs
   goal: >
@@ -26,7 +26,7 @@ content_writer_blogs:
     You are a skilled writer with a talent for crafting engaging and informative content. You have a strong understanding of content marketing, and you are able to produce high-quality blogs that drive traffic and engagement.
 
 seo_specialist:
-  llm: gemini/gemini-2.0-flash
+  llm: gemini/gemini-3.5-flash
   role: >
     SEO Specialist
   goal: >
