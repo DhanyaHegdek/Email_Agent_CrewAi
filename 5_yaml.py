@@ -1,4 +1,5 @@
-from crewai import Agent, Crew, Process, Task, LLM, CrewBase, agent, crew, task  # type: ignore[import]
+from crewai import Agent, Crew, Process, Task, LLM # type: ignore[import]
+from crewai.project import CrewBase, agent, crew, task # type: ignore[import]
 
 from crewai_tools import SerperDevTool, ScrapeWebsiteTool, DirectoryReadTool, FileWriterTool, FileReadTool  # type: ignore[import]
 
