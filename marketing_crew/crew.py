@@ -12,7 +12,7 @@ llm = LLM(
     temperature=0.7,
 )
 
-
+#pydentic model for content output which defines the structure of the content that will be created by the marketing crew. It includes fields for content type, topic, target audience, tags, and the content itself.
 class Content(BaseModel):
     content_type: str = Field(...,
                               description="The type of content to be created (e.g., blog post, social media post, video)")
