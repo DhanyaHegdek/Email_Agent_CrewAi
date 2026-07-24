@@ -1,54 +1,60 @@
-from crewai import Agent, Crew, Process, Task, LLM # type: ignore[import]
-from crewai.project import CrewBase, agent, crew, task # type: ignore[import]
-
-from crewai_tools import SerperDevTool, ScrapeWebsiteTool, DirectoryReadTool, FileWriterTool, FileReadTool  # type: ignore[import]
-
 from dotenv import load_dotenv
 load_dotenv()
 
-@CrewBase
-class BlogCrew():
-    """"Blog writing crew"""
+from crewai import LLM
+import os
 
-    agents_config = "config/agents.yaml"
-    tasks_config = "config/tasks.yaml"
+llm = LLM(
+    model="gemini/gemini-3.5-flash",
+    temperature=0.1
+)
 
-    @agent
-    def researcher(self) -> Agent:
-        return Agent(
-            config=self.agents_config['research_agent'], # type: ignore[index]
-            tools=[SerperDevTool()],
-            verbose=True
-        )
+from crewai import Agent, Task, Crew
+from crewai_tools import SerperDevTool
 
-    @agent
-    def writer(self) -> Agent:
-        return Agent(
-            config=self.agents_config['writer_agent'], # type: ignore[index]
-            verbose=True
-        )
+research_agent = Agent(
+    role="Research Specialist",
+    goal="Research interesting facts about the topic: {topic}",
+    backstory="You are an expert at finding relevant and factual data.",
+    tools=[SerperDevTool()],
+    verbose=True,
+    llm=llm
+)
 
-    @task
-    def research_task(self) -> Task:
-        return Task(
-            config=self.tasks_config['research_task'], # type: ignore[index]
-            agent = self.researcher()
-        )
+writer_agent = Agent(
+    role="Creative Writer",
+    goal="Write a short blog summary using the research",
+    backstory="You are skilled at writing engaging summaries based on provided content.",
+    llm=llm,
+    verbose=True,
+)
 
-    @task
-    def blog_task(self) -> Task:
-        return Task(
-            config=self.tasks_config['blog_task'], # type: ignore[index]
-            agent = self.writer()
-        )
+task1 = Task(
+    description="Find 3-5 interesting and recent facts about {topic} as of year 2025.",
+    expected_output="A bullet list of 3-5 facts",
+    agent=research_agent,
+)
 
-    @crew
-    def crew(self) -> Crew:
-        return Crew(
-            agents=[self.researcher(), self.writer()],
-            tasks=[self.research_task(), self.blog_task()]
-        )
+task2 = Task(
+    description="Write a 100-word blog post summary about {topic} using the facts from the research.",
+    expected_output="A blog post summary",
+    agent=writer_agent,
+    context=[task1],
+)
 
-if __name__ == "__main__":
-    blog_crew = BlogCrew()
-    blog_crew.crew().kickoff(inputs={"topic": "The future of electrical vehicles"})
+crew = Crew(
+    agents=[research_agent, writer_agent],
+    tasks=[task1, task2],
+    verbose=True,
+    memory=True,
+    embedder={
+        "provider": "google",
+        "config": {
+            "api_key": os.getenv("GEMINI_API_KEY"),
+            "model": "text-embedding-004"
+        }
+    }
+)
+
+crew.kickoff(inputs={"topic": "The future of electrical vehicles"})
+crew.kickoff(inputs={"topic": "What is the revenue outlook in this sector?"})
