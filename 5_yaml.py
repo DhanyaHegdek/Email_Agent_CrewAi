@@ -1,7 +1,6 @@
-from crewai import Agent, Crew, Process, Task, LLM
-from crewai.project import CrewBase, agent, crew, task
+from crewai import Agent, Crew, Process, Task, LLM, CrewBase, agent, crew, task  # type: ignore[import]
 
-from crewai_tools import SerperDevTool, ScrapeWebsiteTool, DirectoryReadTool, FileWriterTool, FileReadTool
+from crewai_tools import SerperDevTool, ScrapeWebsiteTool, DirectoryReadTool, FileWriterTool, FileReadTool  # type: ignore[import]
 
 from dotenv import load_dotenv
 load_dotenv()
